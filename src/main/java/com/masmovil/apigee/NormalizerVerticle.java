@@ -34,17 +34,6 @@ public class NormalizerVerticle extends AbstractVerticle {
         // Create a router object.
         Router router = Router.router(vertx);
 
-        // Serve static resources from the /assets directory
-        router.route("/assets/*").handler(StaticHandler.create("assets"));
-
-        // Bind "/" to our hello message - so we are still compatible.
-        router.route("/").handler(routingContext -> {
-            HttpServerResponse response = routingContext.response();
-            response
-                    .putHeader("content-type", "text/html")
-                    .end("<h1>Hello from root</h1>");
-        });
-
         router.route("/v1/normalizer*").handler(BodyHandler.create());
         router.post("/v1/normalizer").handler(this::translateWithSpec);
         router.post("/v1/normalizer/:id").handler(this::translateWithoutSpec);
